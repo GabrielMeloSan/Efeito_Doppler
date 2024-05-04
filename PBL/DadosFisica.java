@@ -1,7 +1,7 @@
 package PBL;
 
 
-//o planejamento é fazer uma subclasse para o calculo das velocidades e intensidade para serem inseridas posteriormente nesta classe.
+// o planejamento é fazer uma subclasse para o calculo das velocidades e intensidade para serem inseridas posteriormente nesta classe.
 // E fazer subclasses para os calculos, geração de graficos e arquivos de audio.
 
 public class DadosFisica {
