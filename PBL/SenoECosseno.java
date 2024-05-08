@@ -3,7 +3,7 @@ package PBL;
 public class SenoECosseno {
 
     //Função para calcula fatorial
-    public int calcularFatorial(int n) {
+    public static int calcularFatorial(int n) {
         if (n == 0 || n == 1) {
             return 1;
         } else {
