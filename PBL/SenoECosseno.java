@@ -1,13 +1,6 @@
 package PBL;
 
-
-
-
-
-
 public class SenoECosseno {
-
-
 
     //Função para calcula fatorial
     public int calcularFatorial(int n) {
@@ -17,8 +10,6 @@ public class SenoECosseno {
             return n * calcularFatorial(n - 1);
         }
     }
-
-
 
     //Função que calculo o seno de um ângulo em RADIANOS
     public double CalculaSeno(double x, double PrecisaoDesejada){
@@ -100,7 +91,6 @@ public class SenoECosseno {
 
             contador++;
         }
-
         return estimativa;
     }
 }
