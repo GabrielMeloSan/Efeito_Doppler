@@ -1,4 +1,4 @@
-package PBL;
+//retirado a parte package
 
 public class SenoECosseno {
 

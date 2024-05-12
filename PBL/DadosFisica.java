@@ -1,4 +1,5 @@
-package PBL;
+//deletado a parte "package PBL;"
+
 
 
 // o planejamento é fazer uma subclasse para o calculo das velocidades e intensidade para serem inseridas posteriormente nesta classe.

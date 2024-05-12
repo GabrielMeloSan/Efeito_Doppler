@@ -3,8 +3,6 @@
 
 import java.util.Scanner;
 
-import PBL.SenoECosseno;
-
 public class main {
     public static void main(String[] args) {
 
