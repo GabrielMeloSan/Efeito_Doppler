@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class main {
     public static void main(String[] args) {
         Scanner leitor = new Scanner(System.in);
-        System.out.println("Digite a sua opção:\n 1- Modulo de calculo \n 2- Modulo de BD");
+        System.out.println("Digite a sua opção:\n 1- Modulo de calculo \n 2- Modulo de BD \n 3- Grafico");
         int opcao = leitor.nextInt();
 
         switch (opcao) {
@@ -19,6 +19,9 @@ public class main {
                 break;
             case 2:
                 BD();
+            case 3:
+                Grafico();
+                break;
             default:
                 System.out.println("Erro");
                 break;
@@ -38,6 +41,12 @@ public class main {
         //precisao arbitraria de 0.0001
         System.out.println("Seno: " + Double.toString(calc.CalculaSeno(x, 0.0001)));
         System.out.println("Coseno: " + Double.toString(calc.CalculaCosseno(x, 0.0001)));
+    }
+
+    static void Grafico(){
+        Grafico grafico = new Grafico();
+        
+        grafico.plot();
     }
 
     static void criaBanco(Connection conexao){
