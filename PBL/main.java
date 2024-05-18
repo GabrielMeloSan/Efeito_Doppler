@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class main {
     public static void main(String[] args) {
         Scanner leitor = new Scanner(System.in);
-        System.out.println("Digite a sua opção:\n 1- Modulo de calculo \n 2- Modulo de BD \n 3- Grafico");
+        System.out.println("Digite a sua opção:\n 1- Modulo de calculo \n 2- Modulo de BD \n 3- Grafico \n 4- Gerar som");
         int opcao = leitor.nextInt();
 
         switch (opcao) {
@@ -21,6 +21,10 @@ public class main {
                 BD();
             case 3:
                 Grafico();
+                break;
+            case 4:
+                GerarSom();
+
                 break;
             default:
                 System.out.println("Erro");
@@ -144,5 +148,10 @@ public class main {
         }
                 
         
+    }
+
+    public static void GerarSom(){
+        GeraSom gerasom = new GeraSom();
+        gerasom.CriaAudio();
     }
 }
