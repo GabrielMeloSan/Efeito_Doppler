@@ -134,12 +134,10 @@ end
 
 --Criação de uma SP para inserir dados em EMISSOR
 create or alter procedure sp_insert_Emissor (@frequencia float, @VelocidadeEm float,
-											@potencia float, @VelocidadeOn float) as
+					     @potencia float, @VelocidadeOn float) as
 begin
 	insert into Emissor values (@frequencia, @VelocidadeEm, @potencia, @VelocidadeOn)
 end
-
-
 
 --Criação de uma SP para inserir dados em Simulação
 create or alter procedure sp_insert_Simulacao (@Distancia float, @Frequenciafi float, @Frequenciaini float) as
@@ -150,7 +148,7 @@ begin
 end
 
 --Criação de uma SP para inserir dados em Ouvinte
-create or alter procedure sp_insert_Ouvinte (@velocidadeOu float) as
+create or alter procedure sp_insert_Simulacao (@velocidadeOu float) as
 begin
 	insert into Ouvinte values (@velocidadeOu)
 end
