@@ -27,7 +27,7 @@ create table Simulacao --cria tabela Simulação
 	Distancia float not null,
 	Frequencia_final float not null,
 	Frequencia_inicial float not null,
-
+	primary key (Fk_Emissor_nm_emissor, Fk_Ouvinte_nm_ouvinte)
 )
 
 --CRIAÇÃO DE TRIGGERS:
