@@ -219,4 +219,12 @@ public class SimulacaoDAO {
         } catch (SQLException e){} // caso de a trigger já existir
         
     }
+    public void criaDeleteAllSp(){
+        String createTrigger = "create or alter procedure sp_delete_all (@nm int) begin delete from Emissor where nm_emissor = @nm end";
+         try(PreparedStatement stm = conexao.prepareStatement(createTrigger)){
+            stm.executeUpdate();
+            
+        } catch (SQLException e){} // caso de a trigger já existir
+        
+    }
 }
