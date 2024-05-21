@@ -39,7 +39,7 @@ public class SimulacaoDAO {
         
         try(PreparedStatement stm = conexao.prepareStatement(createTable)){
             stm.executeUpdate();
-            System.out.println("Tabela Emissor criada");
+         
         } catch (SQLException e){} // caso a tabela já exista
     }
     // Tabela de Ouvintes
@@ -50,7 +50,7 @@ public class SimulacaoDAO {
         
         try(PreparedStatement stm = conexao.prepareStatement(createTable)){
             stm.executeUpdate();
-            System.out.println("Tabela Ouvinte criada");
+            
         } catch (SQLException e){} // caso de a tabela já existir
     }
     // Tabela de Simulações
@@ -65,7 +65,7 @@ public class SimulacaoDAO {
         
         try(PreparedStatement stm = conexao.prepareStatement(createTable)){
             stm.executeUpdate();
-            System.out.println("Tabela Simulacao criada");
+            
         } catch (SQLException e){} // caso de a tabela já existir
     }
     
@@ -103,6 +103,10 @@ public class SimulacaoDAO {
                                 "	return " +
                                 "end " +
                                 "end";
+         try(PreparedStatement stm = conexao.prepareStatement(createTrigger)){
+            stm.executeUpdate();
+            
+        } catch (SQLException e){} // caso de a trigger já existir
         
     }
 }
