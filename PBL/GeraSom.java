@@ -9,21 +9,23 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
 public class GeraSom {
-    public static void CriaAudio() {
+    public static void CriaAudio(double f1, double f2, double duracao, String nome) {
+
+        SenoECosseno calc = new SenoECosseno();
         // Define as frequências desejadas em Hz
-        double frequencia1 = 440.0; // Exemplo: 440 Hz para a nota Lá
-        double frequencia2 = 550.0; // Nova frequência para a segunda metade
+        double frequencia1 = f1; // Exemplo: 440 Hz para a nota Lá
+        double frequencia2 = f2; // Nova frequência para a segunda metade
 
         // Define a duração total do áudio em segundos
-        double duracaoTotal = 5.0; // Exemplo: 6 segundos
+        double duracaoTotal = duracao; // Exemplo: 6 segundos
 
         // Define o volume inicial, final e o momento de mudança de volume (em segundos)
-        double volumeInicial = 0.2; // Volume inicial (entre 0.0 e 1.0)
+        double volumeInicial = 0.1; // Volume inicial (entre 0.0 e 1.0)
         double volumeFinal = 1.0; // Volume máximo
         double momentoMudancaVolume = duracaoTotal / 2.0; // Momento de mudança de volume (na metade)
 
         // Define o nome do arquivo de saída
-        String nomeArquivo = "audio.wav";
+        String nomeArquivo = nome + ".wav";
 
         try {
             // Obtém o formato de áudio padrão

@@ -15,7 +15,7 @@ public class main {
 
         switch (opcao) {
             case 1:
-                SenoeCosseno();
+                SenoeCosseno();;
                 break;
             case 2:
                 BD();
@@ -23,7 +23,8 @@ public class main {
                 Grafico();
                 break;
             case 4:
-                GerarSom();
+                System.out.println("A opção não funciona mais");
+                break;
             case 5:
                 TesteFisica();
                 break;
@@ -45,7 +46,7 @@ public class main {
         System.out.println("Insira a Velocidade relativa entre a fonte e o observador (m/s): ");
         double velocidade_relativa = scn.nextDouble();
 
-        double valor_minimo = 5 * velocidade_relativa; 
+        double valor_minimo = 5 * velocidade_relativa;
 
         System.out.println("Insira a Distancia inicial entre a fonte e o observador (m): " + "[valor mínimo: " + Double.toString(velocidade_relativa) + "]" );
         double distancia_inicial = scn.nextDouble();
@@ -67,6 +68,12 @@ public class main {
 
         dados.CalculaIntensidade();
         System.out.println("Intensidade inicial: " + Double.toString(dados.getIntensidade()) + "W/m²");
+
+        GeraSom gerar = new GeraSom();
+
+        gerar.CriaAudio(dados.CalculaFrequenciaAprox(velocidade_relativa, frequencia_inicial), dados.CalculaFrequenciaAfast(velocidade_relativa, frequencia_inicial), dados.getTempo(), dados.getNome_do_audio());
+
+        System.out.println("Audio gerado!");
     }
 
     static void SenoeCosseno(){
@@ -186,8 +193,5 @@ public class main {
         
     }
 
-    public static void GerarSom(){
-        GeraSom gerasom = new GeraSom();
-        gerasom.CriaAudio();
-    }
+  
 }
