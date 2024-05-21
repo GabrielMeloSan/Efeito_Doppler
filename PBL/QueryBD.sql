@@ -159,3 +159,8 @@ begin
 	insert into Ouvinte values (@velocidadeOu)
 end
 
+--Criação de uma SP para deletar todos os dados de uma simulação através da trigger
+create or alter procedure sp_delete_all (@nm int) begin delete from Emissor where nm_emissor = @nm end
+
+
+
