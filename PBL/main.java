@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class main {
     public static void main(String[] args) {
         Scanner leitor = new Scanner(System.in);
-        System.out.println("Digite a sua opção:\n 1- Modulo de calculo \n 2- Modulo de BD \n 3- Grafico \n 4- Gerar som");
+        System.out.println("Digite a sua opção:\n 1- Modulo de calculo \n 2- Modulo de BD \n 3- Grafico \n 4- Gerar som \n 5- TESTE DE FÍSICA");
         int opcao = leitor.nextInt();
 
         switch (opcao) {
@@ -24,13 +24,49 @@ public class main {
                 break;
             case 4:
                 GerarSom();
-
+            case 5:
+                TesteFisica();
                 break;
             default:
                 System.out.println("Erro");
                 break;
         }
         
+    }
+
+    static void TesteFisica(){
+
+        //valores a serem inseridos: frequencia da fonte, velocidade relativa, distancia inicial entre a fonte e observador, tempo da simulação, nome do audio e potência
+        Scanner scn = new Scanner(System.in);
+
+        System.out.println("Insira a frequencia da fonte (hz): ");
+        double frequencia_inicial = scn.nextDouble();
+        
+        System.out.println("Insira a Velocidade relativa entre a fonte e o observador (m/s): ");
+        double velocidade_relativa = scn.nextDouble();
+
+        double valor_minimo = 5 * velocidade_relativa; 
+
+        System.out.println("Insira a Distancia inicial entre a fonte e o observador (m): " + "[valor mínimo: " + Double.toString(velocidade_relativa) + "]" );
+        double distancia_inicial = scn.nextDouble();
+
+        System.out.println("Insira o nome do audio: ");
+        String nome_audio = scn.next();
+
+        System.out.println("Insira a potência da fonte(W): ");
+        double potencia = scn.nextDouble();
+
+        DadosFisica dados = new DadosFisica(frequencia_inicial, distancia_inicial, velocidade_relativa, potencia, nome_audio);
+
+        System.out.println("\n\n\n\nFrequencia aprox: " + Double.toString(dados.CalculaFrequenciaAprox(velocidade_relativa, frequencia_inicial)));
+
+        System.out.println("Frequencia afast: " + Double.toString(dados.CalculaFrequenciaAfast(velocidade_relativa, frequencia_inicial)));
+
+        dados.CalculaTempoSimulacao();
+        System.out.println("Tempo: " + Double.toString(dados.getTempo()) + "s");
+
+        dados.CalculaIntensidade();
+        System.out.println("Intensidade inicial: " + Double.toString(dados.getIntensidade()) + "W/m²");
     }
 
     static void SenoeCosseno(){

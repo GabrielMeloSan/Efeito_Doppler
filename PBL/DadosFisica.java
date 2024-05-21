@@ -7,24 +7,21 @@ public class DadosFisica {
     private double distanciaInicial;
     private double tempo;
     private double velocidadeRelativa;
-    private double velocidadeFonte;
     private double potencia;
     private double intensidade;
     private double frequenciaInicial;
     private double frequenciaPercebidaAprox;
     private double frequenciaPercebidaAfast;
-    private double nome_do_audio;
+    private String nome_do_audio;
 
     //O método construtor pode sofrer mudanças, pois na hora de instanciar a classe os valores podem ser nulos e o erro acontecer
     //Se der errado o método construtor na main é só apagar os valores de entrada  e colocar valores arbitrários.
 
-    public DadosFisica(double frequenciaInicial, double distanciaInicial, double tempo, double velocidadeRelativa, double potencia, double intensidade,  double nome_do_audio){
+    public DadosFisica(double frequenciaInicial, double distanciaInicial, double velocidadeRelativa, double potencia, String nome_do_audio){
         this.frequenciaInicial = frequenciaInicial;
         this.distanciaInicial = distanciaInicial;
-        this.tempo = tempo;
         this.velocidadeRelativa = velocidadeRelativa;
         this.potencia = potencia;
-        this.intensidade = intensidade;
         this.nome_do_audio = nome_do_audio;
     }
 
@@ -52,7 +49,7 @@ public class DadosFisica {
         return intensidade;
     }
 
-    public double getNome_do_audio(){
+    public String getNome_do_audio(){
         return nome_do_audio;
     }
 
@@ -80,26 +77,26 @@ public class DadosFisica {
         this.intensidade = intensidade;
     }
 
-    public void setNome_do_audio(double nome_do_audio){
+    public void setNome_do_audio(String nome_do_audio){
         this.nome_do_audio = nome_do_audio;
     }
 
     //Calculos de Fisica
-    public double calculaFrequenciaAprox(double velocidadeInicial,double frequenciaInicial) {
+    public double CalculaFrequenciaAprox(double velocidadeRelativa,double frequenciaInicial) {
 
-        frequenciaPercebidaAprox = frequenciaInicial * 340 / (340 - velocidadeInicial);
+        frequenciaPercebidaAprox = frequenciaInicial * 340 / (340 - velocidadeRelativa);
 
         return frequenciaPercebidaAprox;
     }
 
-    public double calculaFrequenciaAfast(double velocidadeInicial,double frequenciaInicial) {
+    public double CalculaFrequenciaAfast(double velocidadeRelativa,double frequenciaInicial) {
 
-        frequenciaPercebidaAfast = frequenciaInicial * 340 / (340 + velocidadeInicial);
+        frequenciaPercebidaAfast = frequenciaInicial * 340 / (340 + velocidadeRelativa);
 
         return frequenciaPercebidaAfast;
     }
 
-    public double calculaAmplitude(double potencia, double distancia) {
+    public double CalculaAmplitude(double potencia, double distancia) {
 
         double intensidadeFisica, amplitude;
 
@@ -109,6 +106,17 @@ public class DadosFisica {
         
         return amplitude;
 
+    }
+
+    public void CalculaTempoSimulacao(){
+        double temposimulacao = 2*distanciaInicial/velocidadeRelativa;
+        
+        this.tempo = temposimulacao;
+    }
+
+    public void CalculaIntensidade(){
+        double Intensidadecalculada = potencia/(4 * (Math.PI) * Math.pow(distanciaInicial,2));
+        this.intensidade = Intensidadecalculada;
     }
 
     
