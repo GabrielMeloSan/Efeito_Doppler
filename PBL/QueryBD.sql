@@ -27,8 +27,12 @@ create table Simulacao --cria tabela Simulação
 	Distancia float not null,
 	Frequencia_final float not null,
 	Frequencia_inicial float not null,
+	audio varbinary(max),
 	primary key (Fk_Emissor_nm_emissor, Fk_Ouvinte_nm_ouvinte)
+	
 )
+
+
 
 --CRIAÇÃO DE TRIGGERS:
 
@@ -140,11 +144,13 @@ begin
 end
 
 --Criação de uma SP para inserir dados em Simulação
-create or alter procedure sp_insert_Simulacao (@Distancia float, @Frequenciafi float, @Frequenciaini float) as
+create or alter procedure sp_insert_Simulacao (@Distancia float, @Frequenciafi float, @Frequenciaini float, @audio varbinary(max)) as
 begin
 	declare @nm int 
+	
 	set @nm = (select isnull(max(nm_emissor),1) from Emissor)
-	insert into Simulacao values (@nm, @nm, @Distancia, @Frequenciafi, @Frequenciaini)
+	
+	insert into Simulacao values (@nm, @nm, @Distancia, @Frequenciafi, @Frequenciaini, @audio)
 end
 
 --Criação de uma SP para inserir dados em Ouvinte
@@ -152,3 +158,4 @@ create or alter procedure sp_insert_Simulacao (@velocidadeOu float) as
 begin
 	insert into Ouvinte values (@velocidadeOu)
 end
+
