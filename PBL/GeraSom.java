@@ -46,7 +46,7 @@ public class GeraSom {
                     volume = volumeFinal - ((volumeFinal - volumeInicial) * ((i / 2) - (momentoMudancaVolume * 44100)) / (momentoMudancaVolume * 44100));
                 }
                 double angle1 = 2.0 * Math.PI * i / (44100 / frequencia1);
-                short sample1 = (short) (Math.sin(angle1) * volume * Short.MAX_VALUE);
+                short sample1 = (short) (calc.CalculaSeno(angle1) * volume * Short.MAX_VALUE);
                 samples[i] = (byte) (sample1 & 0xFF);
                 samples[i + 1] = (byte) ((sample1 >> 8) & 0xFF);
             }
@@ -61,7 +61,7 @@ public class GeraSom {
                     volume = volumeInicial + ((volumeFinal - volumeInicial) * (((i - samples.length / 2) / 2) - (momentoMudancaVolume * 44100)) / (momentoMudancaVolume * 44100));
                 }
                 double angle2 = 2.0 * Math.PI * ((i - samples.length / 2) / 2) / (44100 / frequencia2);
-                short sample2 = (short) (Math.sin(angle2) * volume * Short.MAX_VALUE);
+                short sample2 = (short) (calc.CalculaSeno(angle2) * volume * Short.MAX_VALUE);
                 samples[i] = (byte) (sample2 & 0xFF);
                 samples[i + 1] = (byte) ((sample2 >> 8) & 0xFF);
             }

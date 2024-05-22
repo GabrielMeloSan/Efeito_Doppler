@@ -86,8 +86,7 @@ public class main {
         double x = scn.nextDouble();
 
         //precisao arbitraria de 0.0001
-        System.out.println("Seno: " + Double.toString(calc.CalculaSeno(x, 0.0001)));
-        System.out.println("Coseno: " + Double.toString(calc.CalculaCosseno(x, 0.0001)));
+        System.out.println("Seno: " + Double.toString(calc.CalculaSeno(x)));
     }
 
     static void Grafico(){
