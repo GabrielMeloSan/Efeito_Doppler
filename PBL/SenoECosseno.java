@@ -2,22 +2,21 @@
 
 public class SenoECosseno {
 
-    //Função para calcula fatorial
+    //Função para calcular fatorial
     public static int calcularFatorial(int n) {
-        if (n == 0 || n == 1) {
-            return 1;
-        } else {
-            return n * calcularFatorial(n - 1);
+        int fatorial = 1;
+        for (int i = 1; i <= n; i++) {
+            fatorial *= i;
         }
+        return fatorial;
     }
-
       // Função que calcula o seno de um ângulo em RADIANOS
       public double CalculaSeno(double x) {
         double precisao = 1e-15;
         double estimativa = 0;
         int k = 0;
 
-        // Normaliza o valor do ângulo para o intervalo [0, 2π)
+        // coloca o angulo entre 0 e 2pi
         x = x % (2 * Math.PI);
         if (x < 0) {
             x += 2 * Math.PI;
