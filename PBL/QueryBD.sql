@@ -180,5 +180,23 @@ end
 --Criação de uma SP para deletar todos os dados de uma simulação através da trigger
 create or alter procedure sp_delete_all (@nm int) as begin delete from Emissor where nm_emissor = @nm end
 
+-- SPs de select
+-- SP para selecionar todos os registros
+create or alter procedure sp_Select_All as begin
+	select e.*, s.Distancia, s.Tempo, s.Intensidade, s.Frequencia_inicial, s.Frequencia_final, s.NomeAudio from Emissor e
+	left join Simulacao s on s.Fk_Emissor_nm_emissor = e.nm_emissor
+end
 
+-- SP para selecionar um registro específico
+create or alter procedure sp_Select_ID (@id int) as begin
+	select e.*, s.Distancia, s.Tempo, s.Intensidade, s.Frequencia_inicial, s.Frequencia_final, s.NomeAudio from Emissor e
+	left join Simulacao s on s.Fk_Emissor_nm_emissor = e.nm_emissor
+	where e.nm_emissor = @id
+end
+
+-- SP para selecionar um áudio
+create or alter procedure sp_Select_Audio (@id int) as begin
+	select NomeAudio, Audio from Simulacao
+	where Fk_Emissor_nm_emissor = @id
+end
 
