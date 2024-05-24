@@ -1,5 +1,5 @@
 import java.sql.*;
-
+import java.io.InputStream;
 public class SimulacaoDAO {
     
     private final Connection conexao;
@@ -219,7 +219,7 @@ public class SimulacaoDAO {
                             "begin " +
                             "	declare @nm int  " +
                             "	set @nm = (select isnull(max(nm_emissor),1) from Emissor) " +
-                            "	insert into Simulacao values (@nm, /*@nm,*/ @Distancia, @Tempo, @Intensidade, @Frequenciafi, @Frequenciaini, @nome, @audio) " +
+                            "	insert into Simulacao values (@nm, /*@nm,*/ @Distancia, @Tempo, @Intensidade, @Frequenciafi, @Frequenciaini, @nomeA, @audio) " +
                             "end";
         try(PreparedStatement stm = conexao.prepareStatement(createSP)){
             stm.executeUpdate(); 
@@ -247,4 +247,44 @@ public class SimulacaoDAO {
         } catch (SQLException e){System.out.print("ERRO: " + e.getMessage());}
         
     }
+    
+    public void execProcedureInsertEmissor(double frequencia, double velocidadeRel, double potencia, double velocidadeOn)throws SQLException
+    {
+        String execSP = "exec sp_insert_Emissor ?, ?, ?, ? ";
+        
+        try (PreparedStatement stm = conexao.prepareStatement(execSP)){
+            stm.setDouble(1, frequencia);
+            stm.setDouble(2, velocidadeRel);
+            stm.setDouble(3, potencia);
+            stm.setDouble(4, velocidadeOn);
+            stm.executeUpdate();
+        
+        }
+        
+    }
+     public void execProcedureInsertSimulacoes(double distancia, double tempo, double intensidade, double Frequenciafi, double Frequenciaini, String nomeA, InputStream audio) throws SQLException
+    {
+        String execSP = "sp_insert_Simulacao  ?, ?, ?, ?, ?, ?, ? ";
+        
+        try (PreparedStatement stm = conexao.prepareStatement(execSP)){
+            stm.setDouble(1, distancia);
+            stm.setDouble(2, tempo);
+            stm.setDouble(3, intensidade);
+            stm.setDouble(4, Frequenciafi);
+            stm.setDouble(5, Frequenciaini);
+            stm.setString(6, nomeA);
+            stm.setBinaryStream(7, audio);
+
+            stm.executeUpdate();
+        
+        }
+        
+    }
+     public void execDelete (int numeroSimulacao) throws SQLException{
+         String execDelete = "delete from emissor where nm_emissor = ?";
+         try(PreparedStatement stm = conexao.prepareStatement(execDelete)){
+         stm.setInt(1, numeroSimulacao);
+         stm.executeUpdate();
+         }
+     }
 }
