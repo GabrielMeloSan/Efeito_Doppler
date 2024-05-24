@@ -20,19 +20,7 @@ public class Conexao {
             if (conexao != null) {
                 System.out.println("Conexão bem-sucedida!");
                 SimulacaoDAO sml = new SimulacaoDAO(conexao);
-                
-                sml.criaBanco();
-                sml.criaTabelaEmissor();
-                sml.criaTabelaOuvinte();
-                sml.criaTabelaSimulacao();
-                sml.criaInsertTriggerEmissor();
-                sml.criaInsertTriggerSimulacao();
-                sml.criaInsertTriggerOuvinte();
-                sml.criaTriggerDeleteAll();
-                sml.criaInsertSpEmissor();
-                sml.criaInsertSpOuvinte();
-                sml.criaInsertSpSimulacao();
-                sml.criaDeleteAllSp();
+                sml.criaObjetosBD();
             } else {
                 System.out.println("Não foi possível conectar ao banco de dados.");
             }

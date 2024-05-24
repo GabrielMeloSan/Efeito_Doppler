@@ -29,40 +29,44 @@ public class SimulacaoDAO {
     // Criação das tabelas
     
     //Tabela de Emissores
-    public void criaTabelaEmissor(){
+    public void criaTabelaEmissor() throws SQLException{
         // Comando para criação da tabela
-        String createTable = "CREATE TABLE Emissor(" + 
-                             "nm_emissor int identity(1,1) primary key," +
-                             "Frequencia float not null," +
-                             "Velocidade_Emissor float," +
-                             "Potencia float not null," +
-                             "Velocidade_Onda float not null)";
+        String createTable = "create table Emissor( " +
+                            "	nm_emissor int identity(1,1) primary key,  " +
+                            "	Frequencia float not null, " +
+                            "	Velocidade_Relativa float, " +
+                            "	Potencia float not null, " +
+                            "	Velocidade_Onda float not null )";
         
         try(PreparedStatement stm = conexao.prepareStatement(createTable)){
             stm.executeUpdate();
          
         } catch (SQLException e){} // caso a tabela já exista
     }
-    // Tabela de Ouvintes
-    public void criaTabelaOuvinte(){
-        String createTable = "CREATE TABLE Ouvinte("
-                            + "nm_ouvinte int identity(1,1) primary key,"
-                            + "Velocidade_ouvinte)";
-        
-        try(PreparedStatement stm = conexao.prepareStatement(createTable)){
-            stm.executeUpdate();
-            
-        } catch (SQLException e){} // caso de a tabela já existir
-    }
+    // Tabela de Ouvintes (Descontinuada)
+//    public void criaTabelaOuvinte(){
+//        String createTable = "CREATE TABLE Ouvinte("
+//                            + "nm_ouvinte int identity(1,1) primary key,"
+//                            + "Velocidade_ouvinte)";
+//        
+//        try(PreparedStatement stm = conexao.prepareStatement(createTable)){
+//            stm.executeUpdate();
+//            
+//        } catch (SQLException e){} // caso de a tabela já existir
+//    }
     // Tabela de Simulações
-    public void criaTabelaSimulacao(){
-        String createTable = "CREATE TABLE Simulacao("
-                            + "Fk_Emissor_nm_emissor int not null foreign key references Emissor,"
-                            + "Fk_Ouvinte_nm_ouvinte int not null foreign key references Ouvinte,"
-                            + "Distancia float not null,"
-                            + "Frequencia_final float not null,"
-                            + "Frequencia_inicial float not null,"
-                            + "primary key (Fk_Emissor_nm_emissor, Fk_Ouvinte_nm_ouvinte))";
+    public void criaTabelaSimulacao() throws SQLException{
+        String createTable = "create table Simulacao ( " +
+                            "	Fk_Emissor_nm_emissor int not null " +
+                            "		foreign key references Emissor, " +
+                            "	Distancia float not null, " +
+                            "   Tempo float not null, " +
+                            "	Intensidade float not null, " +
+                            "	Frequencia_final float not null, " +
+                            "	Frequencia_inicial float not null, " +
+                            "   NomeAudio varchar, " +
+                            "	Audio varbinary(max), " +
+                            "	primary key (Fk_Emissor_nm_emissor) )";
         
         try(PreparedStatement stm = conexao.prepareStatement(createTable)){
             stm.executeUpdate();
@@ -70,161 +74,177 @@ public class SimulacaoDAO {
         } catch (SQLException e){} // caso de a tabela já existir
     }
     
+    
     // Criação das triggers
-    public void criaInsertTriggerEmissor(){
+    // Trigger de inserção de emissor
+    public void criaInsertTriggerEmissor() throws SQLException{
         String createTrigger = "create or alter trigger tgr_Insert_Emissor on Emissor " +
                                 "for insert as " +
                                 "begin " +
                                 "	declare @frequencia float = (select Frequencia from inserted) " +
-                                "	declare @velocidadeEm float = (select Velocidade_Emissor from inserted) " +
+                                "	declare @velocidadeRel float = (select Velocidade_Relativa from inserted) " +
                                 "	declare @potencia float = (select Potencia from inserted) " +
                                 "	declare @velocidadeOn float = (select Velocidade_Onda from inserted) " +
-                                "if (@frequencia < 0) " +
-                                "begin " +
-                                "	raiserror('Não é possível armazernar um valor negativo!', 1, 16) " +
-                                "	Rollback tran " +
-                                "	return " +
-                                "end " +
-                                "if (@velocidadeEm < 0) " +
-                                "begin " +
-                                "	raiserror('Não é possível armazernar um valor negativo!', 1, 16) " +
-                                "	Rollback tran " +
-                                "	return " +
-                                "end " +
-                                "if (@potencia < 0) " +
-                                "begin " +
-                                "	raiserror('Não é possível armazernar um valor negativo!', 1, 16) " +
-                                "	Rollback tran " +
-                                "	return " +
-                                "end " +
-                                "if (@velocidadeOn < 0) " +
-                                "begin " +
-                                "	raiserror('Não é possível armazernar um valor negativo!', 1, 16) " +
-                                "	Rollback tran " +
-                                "	return " +
-                                "end " +
+                                "	if (@frequencia < 0) " +
+                                "	begin " +
+                                "		raiserror('Não é possível armazernar um valor negativo!', 1, 16) " +
+                                "		Rollback tran " +
+                                "		return " +
+                                "	end " +
+                                "	if (@velocidadeRel < 0) " +
+                                "	begin " +
+                                "		raiserror('Não é possível armazernar um valor negativo!', 1, 16) " +
+                                "		Rollback tran " +
+                                "		return " +
+                                "	end " +
+                                "	if (@potencia < 0) " +
+                                "	begin " +
+                                "		raiserror('Não é possível armazernar um valor negativo!', 1, 16) " +
+                                "		Rollback tran " +
+                                "		return " +
+                                "	end " +
+                                "	if (@velocidadeOn < 0) " +
+                                "	begin " +
+                                "		raiserror('Não é possível armazernar um valor negativo!', 1, 16) " +
+                                "		Rollback tran " +
+                                "		return " +
+                                "	end " +
                                 "end";
          try(PreparedStatement stm = conexao.prepareStatement(createTrigger)){
             stm.executeUpdate();
-            
-        } catch (SQLException e){} // caso de a trigger já existir
+        }   
+    }
+    // Trigger de inseção de simulação
+    public void criaInsertTriggerSimulacao() throws SQLException{
+        String createTrigger = "create or alter trigger tgr_Insert_Simulacao on Simulacao" +
+                                "for insert as " +
+                                "begin " +
+                                "	declare @distancia float = (select Distancia from inserted) " +
+                                "	declare @tempo float = (select Tempo from inserted) " +
+                                "	declare @intensidade float = (select Intensidade from inserted) " +
+                                "	declare @frequenciaFi float = (select Frequencia_final from inserted) " +
+                                "	declare @frequenciaini float = (select Frequencia_inicial from inserted) " +
+                                "	if (@distancia < 0) " +
+                                "	begin " +
+                                "		raiserror('Não é possível armazernar um valor negativo!', 1, 16) " +
+                                "		Rollback tran " +
+                                "		return " +
+                                "	end " +
+                                "	if (@tempo < 0) " +
+                                "	begin " +
+                                "		raiserror('Não é possível armazernar um valor negativo!', 1, 16) " +
+                                "		Rollback tran " +
+                                "		return " +
+                                "	end " +
+                                "	if (@intensidade < 0) " +
+                                "	begin " +
+                                "		raiserror('Não é possível armazernar um valor negativo!', 1, 16) " +
+                                "		Rollback tran " +
+                                "		return " +
+                                "	end " +
+                                "	if (@frequenciaFi < 0) " +
+                                "	begin " +
+                                "		raiserror('Não é possível armazernar um valor negativo!', 1, 16) " +
+                                "		Rollback tran " +
+                                "		return " +
+                                "	end " +
+                                "	if (@frequenciaini < 0) " +
+                                "	begin " +
+                                "		raiserror('Não é possível armazernar um valor negativo!', 1, 16) " +
+                                "		Rollback tran " +
+                                "		return " +
+                                "	end " +
+                                "end";
+        try(PreparedStatement stm = conexao.prepareStatement(createTrigger)){
+            stm.executeUpdate();   
+        }
         
     }
-    public void criaInsertTriggerSimulacao(){
-        String createTrigger = "create or alter trigger tgr_Insert_Simulacao on Simulacao " +
-"for insert as " +
-"begin " +
-
-"	declare @distancia float = (select Distancia from inserted) " +
-"	declare @frequenciaFi float = (select Frequencia_final from inserted) " +
-"	declare @frequenciaini float = (select Frequencia_inicial from inserted) " +
-
-"	if (@distancia < 0) " +
-"	begin " +
-"		raiserror('Não é possível armazernar um valor negativo!', 1, 16) " +
-"		Rollback tran " +
-"		return " +
-"	end " +
-"	if (@frequenciaFi < 0) " +
-"	begin " +
-"		raiserror('Não é possível armazernar um valor negativo!', 1, 16) " +
-"		Rollback tran " +
-"		return " +
-"	end " +
-"	if (@frequenciaini < 0) " +
-"	begin " +
-"		raiserror('Não é possível armazernar um valor negativo!', 1, 16) " +
-"		Rollback tran " +
-"		return " +
-"	end " +
-"end ";
-         try(PreparedStatement stm = conexao.prepareStatement(createTrigger)){
+//    public void criaInsertTriggerOuvinte() throws SQLException{
+//        String createTrigger = "create or alter trigger tgr_Insert_Ouvinte on Ouvinte " +
+//                                "for insert as " +
+//                                "begin " +
+//
+//                                "	declare @VelocidadeOu float = (select Velocidade_ouvinte from inserted) " +
+//
+//                                "	if (@VelocidadeOu < 0) " +
+//                                "	begin " +
+//                                "		raiserror('Não é possível armazernar um valor negativo!', 1, 16) " +
+//                                "		Rollback tran " +
+//                                "		return " +
+//                                "	end " +
+//
+//                                "end ";
+//        try(PreparedStatement stm = conexao.prepareStatement(createTrigger)){
+//            stm.executeUpdate();
+//        }
+//    }
+    
+    public void criaTriggerDeleteAll() throws SQLException{
+        String createTrigger = "create or alter trigger tgr_Delete_All on Emissor " +
+                                "instead of delete as " +
+                                "begin " +
+                                "	declare @nm int = (select nm_emissor from deleted) " +
+                                "	delete from Simulacao where @nm = Fk_Emissor_nm_emissor " +
+                                "	delete from Emissor where @nm = nm_emissor " +
+                                "end ";
+        try(PreparedStatement stm = conexao.prepareStatement(createTrigger)){
             stm.executeUpdate();
-            
-        } catch (SQLException e){} // caso de a trigger já existir
-        
-    }
-    public void criaInsertTriggerOuvinte(){
-        String createTrigger = "create or alter trigger tgr_Insert_Ouvinte on Ouvinte " +
-"for insert as " +
-"begin " +
-
-"	declare @VelocidadeOu float = (select Velocidade_ouvinte from inserted) " +
-
-"	if (@VelocidadeOu < 0) " +
-"	begin " +
-"		raiserror('Não é possível armazernar um valor negativo!', 1, 16) " +
-"		Rollback tran " +
-"		return " +
-"	end " +
-
-"end ";
-         try(PreparedStatement stm = conexao.prepareStatement(createTrigger)){
-            stm.executeUpdate();
-            
-        } catch (SQLException e){} // caso de a trigger já existir
-        
+        }
     }
     
-    public void criaTriggerDeleteAll(){
-        String createTrigger = "create or alter trigger tgr_Delete_All on Emissor  " +
-"instead of delete as  " +
-"begin  " +
-"	declare @nm int = (select nm_emissor from deleted)  " +
-"	delete from Simulacao where @nm = Fk_Emissor_nm_emissor  " +
-"	delete from Ouvinte where @nm= nm_ouvinte  " +
-"	delete from Emissor where @nm = nm_emissor  " +
-"end ";
-         try(PreparedStatement stm = conexao.prepareStatement(createTrigger)){
+    public void criaInsertSpEmissor()throws SQLException{
+        String createSP = "create or alter procedure sp_insert_Emissor (@frequencia float, @VelocidadeRel float, " +
+                                "					     @potencia float, @VelocidadeOn float) as " +
+                                "begin " +
+                                "	insert into Emissor values (@frequencia, @VelocidadeRel, @potencia, @VelocidadeOn) " +
+                                "end";
+        try(PreparedStatement stm = conexao.prepareStatement(createSP)){
             stm.executeUpdate();
-            
-        } catch (SQLException e){} // caso de a trigger já existir
-        
+        }
     }
-    public void criaInsertSpEmissor(){
-        String createTrigger = "create or alter procedure sp_insert_Emissor (@frequencia float, @VelocidadeEm float,   " +
-"					     @potencia float, @VelocidadeOn float) as   " +
-"begin   " +
-"	insert into Emissor values (@frequencia, @VelocidadeEm, @potencia, @VelocidadeOn)   " +
-"end ";
-         try(PreparedStatement stm = conexao.prepareStatement(createTrigger)){
-            stm.executeUpdate();
-            
-        } catch (SQLException e){} // caso de a trigger já existir
-        
+    
+//    public void criaInsertSpOuvinte() throws SQLException{
+//        String createTrigger = "create or alter procedure sp_insert_Simulacao (@velocidadeOu float) as    " +
+//                                "begin    " +
+//                                "	insert into Ouvinte values (@velocidadeOu)    " +
+//                                "end ";
+//        try(PreparedStatement stm = conexao.prepareStatement(createTrigger)){
+//            stm.executeUpdate();
+//        }
+//    }
+    
+     public void criaInsertSpSimulacao() throws SQLException{
+        String createSP = "create or alter procedure sp_insert_Simulacao (@Distancia float, @Tempo float, @Intensidade float, @Frequenciafi float, @Frequenciaini float, @nome varchar, @audio varbinary(max)) as " +
+                            "begin " +
+                            "	declare @nm int  " +
+                            "	set @nm = (select isnull(max(nm_emissor),1) from Emissor) " +
+                            "	insert into Simulacao values (@nm, /*@nm,*/ @Distancia, @Tempo, @Intensidade, @Frequenciafi, @Frequenciaini, @nome, @audio) " +
+                            "end";
+        try(PreparedStatement stm = conexao.prepareStatement(createSP)){
+            stm.executeUpdate(); 
+        }
     }
-    public void criaInsertSpOuvinte(){
-        String createTrigger =
-"create or alter procedure sp_insert_Simulacao (@velocidadeOu float) as    " +
-"begin    " +
-"	insert into Ouvinte values (@velocidadeOu)    " +
-"end ";
-         try(PreparedStatement stm = conexao.prepareStatement(createTrigger)){
+    
+    public void criaDeleteAllSp() throws SQLException{
+        String createSP = "create or alter procedure sp_delete_all (@nm int) as begin delete from Emissor where nm_emissor = @nm end";
+        try(PreparedStatement stm = conexao.prepareStatement(createSP)){
             stm.executeUpdate();
-            
-        } catch (SQLException e){} // caso de a trigger já existir
-        
+        }
     }
-     public void criaInsertSpSimulacao(){
-        String createTrigger =
-"create or alter procedure sp_insert_Simulacao (@Distancia float, @Frequenciafi float, @Frequenciaini float, @audio varbinary(max)) as " +
-"begin " +
-"	declare @nm int  " +
-"	set @nm = (select isnull(max(nm_emissor),1) from Emissor) " +
-"	insert into Simulacao values (@nm, @nm, @Distancia, @Frequenciafi, @Frequenciaini, @audio) " +
-"end ";
-         try(PreparedStatement stm = conexao.prepareStatement(createTrigger)){
-            stm.executeUpdate();
-            
-        } catch (SQLException e){} // caso de a trigger já existir
-        
-    }
-    public void criaDeleteAllSp(){
-        String createTrigger = "create or alter procedure sp_delete_all (@nm int) begin delete from Emissor where nm_emissor = @nm end";
-         try(PreparedStatement stm = conexao.prepareStatement(createTrigger)){
-            stm.executeUpdate();
-            
-        } catch (SQLException e){} // caso de a trigger já existir
+    
+    public void criaObjetosBD(){
+        try{
+            criaBanco();
+            criaTabelaEmissor();
+            criaTabelaSimulacao();
+            criaInsertTriggerEmissor();
+            criaInsertTriggerSimulacao();
+            criaTriggerDeleteAll();
+            criaInsertSpEmissor();
+            criaInsertSpSimulacao();
+            criaDeleteAllSp();
+        } catch (SQLException e){System.out.print("ERRO: " + e.getMessage());}
         
     }
 }
