@@ -1,5 +1,6 @@
 //deletado a parte "package PBL;"
 
+package src.MVC.Model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

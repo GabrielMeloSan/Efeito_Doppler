@@ -1,3 +1,4 @@
+package src.MVC.View;
 //arquivo de testes
 
 
@@ -6,6 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
+
+import src.MVC.Model.Conexao;
+import src.MVC.Model.DadosFisica;
+import src.MVC.Model.GeraSom;
+import src.MVC.Model.Grafico;
+import src.MVC.Model.SenoECosseno;
 
 public class main {
     public static void main(String[] args) {

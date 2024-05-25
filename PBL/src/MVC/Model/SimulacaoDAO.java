@@ -1,5 +1,9 @@
-import java.sql.*;
+package src.MVC.Model;
+
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 public class SimulacaoDAO {
     
     private final Connection conexao;

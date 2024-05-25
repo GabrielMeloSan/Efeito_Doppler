@@ -1,4 +1,5 @@
 //retirado a parte package
+package src.MVC.Model;
 
 public class SenoECosseno {
 

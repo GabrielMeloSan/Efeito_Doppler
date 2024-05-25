@@ -1,4 +1,6 @@
 
+package src.MVC.Model;
+
 public class Grafico {
     public void plot() {      
 
