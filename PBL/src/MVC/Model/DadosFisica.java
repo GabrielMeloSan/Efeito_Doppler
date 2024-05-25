@@ -68,6 +68,15 @@ public class DadosFisica {
     public void setPotencia(double potencia){
         this.potencia = potencia;
     }
+    
+    public double getFreqPercebidaAprox(){
+        return frequenciaPercebidaAprox;
+    }
+    
+    public double getFreqPercebidaAfast(){
+        return frequenciaPercebidaAfast;
+    }
+
 
     public void setIntensidade(double intensidade){
         this.intensidade = intensidade;
