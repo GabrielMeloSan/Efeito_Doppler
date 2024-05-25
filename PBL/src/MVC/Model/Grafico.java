@@ -6,6 +6,7 @@ public class Grafico {
 
         int n = 300;
 
+        //Gráfico da Intensidade
 
         // the function y = sin(4x) + sin(20x), sampled at n+1 points
         // between x = 0 and x = pi

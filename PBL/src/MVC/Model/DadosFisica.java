@@ -1,8 +1,4 @@
-// o planejamento é fazer uma subclasse para o calculo das velocidades e intensidade para serem inseridas posteriormente nesta classe.
-// E fazer subclasses para os calculos, geração de graficos e arquivos de audio.
-
 package src.MVC.Model;
-
 
 public class DadosFisica {
     // Atributos de entrada e saída
@@ -16,9 +12,7 @@ public class DadosFisica {
     private double frequenciaPercebidaAfast;
     private String nome_do_audio;
 
-    //O método construtor pode sofrer mudanças, pois na hora de instanciar a classe os valores podem ser nulos e o erro acontecer
-    //Se der errado o método construtor na main é só apagar os valores de entrada  e colocar valores arbitrários.
-
+    //Método construtor
     public DadosFisica(double frequenciaInicial, double distanciaInicial, double velocidadeRelativa, double potencia, String nome_do_audio){
         this.frequenciaInicial = frequenciaInicial;
         this.distanciaInicial = distanciaInicial;
@@ -83,7 +77,7 @@ public class DadosFisica {
         this.nome_do_audio = nome_do_audio;
     }
 
-    //Calculos de Fisica
+    //Calculos de Física
     public double CalculaFrequenciaAprox(double velocidadeRelativa,double frequenciaInicial) {
 
         frequenciaPercebidaAprox = frequenciaInicial * 340 / (340 - velocidadeRelativa);
@@ -117,8 +111,8 @@ public class DadosFisica {
     }
 
     public void CalculaIntensidade(){
-        double Intensidadecalculada = potencia/(4 * (Math.PI) * Math.pow(distanciaInicial,2));
-        this.intensidade = Intensidadecalculada;
+        double intensidadecalculada = potencia/(4 * (Math.PI) * Math.pow(distanciaInicial,2));
+        this.intensidade = intensidadecalculada;
     }
 
     
