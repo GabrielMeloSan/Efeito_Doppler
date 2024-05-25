@@ -26,7 +26,7 @@
  *       images and strings
  *
  ******************************************************************************/
-package src.MVC.Model;
+package src.lib;
 
 
 import java.awt.BasicStroke;

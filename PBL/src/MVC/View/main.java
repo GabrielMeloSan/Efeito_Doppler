@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import src.MVC.Model.Conexao;
+import src.MVC.DAO.Conexao;
 import src.MVC.Model.DadosFisica;
 import src.MVC.Model.GeraSom;
 import src.MVC.Model.Grafico;
