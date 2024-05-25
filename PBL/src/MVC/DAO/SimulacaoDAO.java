@@ -1,6 +1,13 @@
-import java.sql.*;
-import java.io.*;
+package src.MVC.DAO;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 public class SimulacaoDAO {
     
     private final Connection conexao;
@@ -299,7 +306,7 @@ public class SimulacaoDAO {
     public void execProcedureInsertSimulacoes(double distancia, double tempo, double intensidade, double Frequenciafi, double Frequenciaini, String nomeA) throws SQLException, IOException{
         String execSP = "exec sp_insert_Simulacao  ?, ?, ?, ?, ?, ?, ? ";
 
-        FileInputStream arquivo = arquivo = new FileInputStream(nomeA); // Cria um inputstream do arquivo de audio
+        FileInputStream arquivo = new FileInputStream(nomeA); // Cria um inputstream do arquivo de audio
         
         try (PreparedStatement stm = conexao.prepareStatement(execSP)){
             stm.setDouble(1, distancia);

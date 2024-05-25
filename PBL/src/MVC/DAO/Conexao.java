@@ -1,5 +1,6 @@
 //deletado a parte "package PBL;"
 
+package src.MVC.DAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,12 +8,12 @@ import java.sql.SQLException;
 
 public class Conexao {
     
-    private String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private String URL = "jdbc:sqlserver://localhost:1433;databaseName=master;encrypt=false;trustServerCertificate=true";
-    private String user = "sa";
-    private String senha = "123456";
+    private static String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    private static String URL = "jdbc:sqlserver://localhost:1433;databaseName=master;encrypt=false;trustServerCertificate=true";
+    private static String user = "sa";
+    private static String senha = "123456";
 
-    public Connection getConnection(){
+    public static Connection getConnection(){
         Connection conexao = null;
         try{
             Class.forName(driver);
