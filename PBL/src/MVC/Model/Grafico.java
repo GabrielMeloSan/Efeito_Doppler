@@ -1,7 +1,7 @@
 
 package src.MVC.Model;
 
-import src.lib.StdDraw;
+import lib.StdDraw;
 
 public class Grafico {
     public void plot() {      

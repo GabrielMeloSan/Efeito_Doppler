@@ -26,7 +26,7 @@
  *       images and strings
  *
  ******************************************************************************/
-package src.lib;
+package lib;
 
 
 import java.awt.BasicStroke;
