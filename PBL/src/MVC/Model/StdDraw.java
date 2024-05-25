@@ -26,8 +26,10 @@
  *       images and strings
  *
  ******************************************************************************/
+package src.MVC.Model;
 
- import java.awt.BasicStroke;
+
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FileDialog;
