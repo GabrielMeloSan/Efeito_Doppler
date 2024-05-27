@@ -1,5 +1,6 @@
 package src.MVC.DAO;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -210,7 +211,6 @@ public class SimulacaoDAO {
                                 "end";
         try(PreparedStatement stm = conexao.prepareStatement(createSP)){
             stm.executeUpdate();
-            System.out.println("SP Criado");
         }
     }
     
@@ -264,7 +264,6 @@ public class SimulacaoDAO {
                             "end";
         try(PreparedStatement stm = conexao.prepareStatement(createSP)){
             stm.executeUpdate();
-            System.out.println("SP Criado");
         }
     }
     
@@ -331,28 +330,13 @@ public class SimulacaoDAO {
     }
     
     // Imprime os dados de todas as simulações
-    public void execSelectAll() throws SQLException{
+    public ResultSet execSelectAll() throws SQLException{
         String execSP = "exec sp_Select_All";
-        ResultSet result;
-        try(PreparedStatement stm = conexao.prepareStatement(execSP)){
-            result = stm.executeQuery();
-            while (result.next()) {
-               System.out.print("ID: " + result.getInt(1) + " | ");
-               System.out.print("Frequência da fonte: " + result.getDouble(2) + " | ");
-               System.out.print("Vel. relativa: " + result.getDouble(3) + " | ");
-               System.out.print("Potencia: " + result.getDouble(4) + " | ");
-               System.out.print("Vel. da onda: " + result.getDouble(5) + " | ");
-               System.out.print("Distância inicial: " + result.getDouble(6) + " | ");
-               System.out.print("Tempo: " + result.getDouble(7) + " | ");
-               System.out.print("Intensidade: " + result.getDouble(8) + " | ");
-               System.out.print("Freq. aproximação: " + result.getDouble(9) + " | ");
-               System.out.print("Freq. afastamento: " + result.getDouble(10) + " | ");
-               System.out.print("Nome do Audio: " + result.getString(11) + " | \n");
-            }
-        }
-        
+        PreparedStatement stm = conexao.prepareStatement(execSP);
+        ResultSet result = stm.executeQuery();        
+        return result;
     }
-        
+            
     // Busca e salva o áudio de uma simulaçao no PC
     public void execSelectAudio(int id) throws SQLException, IOException{
         String execSP = "exec sp_Select_Audio ?";
@@ -365,7 +349,6 @@ public class SimulacaoDAO {
             byte[] audio = resultado.getBytes(2);
             OutputStream arquivo = new FileOutputStream(nomeArq);
             arquivo.write(audio);
-            System.out.println("Arquivo salvo com sucesso");
         }
     }
  

@@ -2,6 +2,7 @@ package src.MVC.View;
 //arquivo de testes
 
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +10,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import src.MVC.DAO.Conexao;
+import src.MVC.DAO.SimulacaoDAO;
 import src.MVC.Model.DadosFisica;
 import src.MVC.Model.GeraSom;
 import src.MVC.Model.Grafico;
@@ -17,7 +19,7 @@ import src.MVC.Model.SenoECosseno;
 public class main {
     public static void main(String[] args) {
         Scanner leitor = new Scanner(System.in);
-        System.out.println("Digite a sua opção:\n 1- Modulo de calculo \n 2- Modulo de BD \n 3- Grafico \n 4- Gerar som \n 5- TESTE DE FÍSICA");
+        System.out.println("Digite a sua opção:\n 1- Modulo de calculo \n 2- Grafico \n 3- Gerar som \n 4- TESTE DE FÍSICA \n 5- Listar todas as simulações \n 6- Recuperar áudio de uma simulação \n 7- Deletar uma simulação");
         int opcao = leitor.nextInt();
 
         switch (opcao) {
@@ -25,15 +27,25 @@ public class main {
                 SenoeCosseno();;
                 break;
             case 2:
-                BD();
-            case 3:
                 Grafico();
                 break;
-            case 4:
+            case 3:
                 System.out.println("A opção não funciona mais");
                 break;
-            case 5:
+            case 4:
                 TesteFisica();
+                break;
+            case 5:                
+                //Listar Simulações
+                ListarTudo();
+                break;
+            case 6:
+                //Recuperar áudio
+                SalvarAudio();
+                break;
+            case 7:
+                //Apagar simulação
+                DeletarSimulacao();
                 break;
             default:
                 System.out.println("Erro");
@@ -81,6 +93,66 @@ public class main {
         gerar.CriaAudio(dados.CalculaFrequenciaAprox(velocidade_relativa, frequencia_inicial), dados.CalculaFrequenciaAfast(velocidade_relativa, frequencia_inicial), dados.getTempo(), dados.getNome_do_audio());
 
         System.out.println("Audio gerado!");
+        
+        try{
+            SimulacaoDAO dao = new SimulacaoDAO(Conexao.getConnection());
+            dao.execProcedureInsertEmissor(dados.getFrequenciaInicial(), dados.getVelocidadeRelativa(), dados.getPotencia(), 340);
+            dao.execProcedureInsertSimulacoes(dados.getDistanciaInicial(), dados.getTempo(), dados.getIntensidade(), dados.getFreqPercebidaAfast(), dados.getFreqPercebidaAprox(), dados.getNome_do_audio()+".wav");
+            System.out.println("Dados resgitrados no banco.");
+        } catch (SQLException e){
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        
+    }
+    
+    static void ListarTudo(){
+        SimulacaoDAO dao = new SimulacaoDAO(Conexao.getConnection());
+        try{
+            ResultSet result = dao.execSelectAll();
+            while (result.next()) {
+                System.out.print("ID: " + result.getInt(1) + " | ");
+                System.out.print("Frequência da fonte: " + result.getDouble(2) + " | ");
+                System.out.print("Vel. relativa: " + result.getDouble(3) + " | ");
+                System.out.print("Potencia: " + result.getDouble(4) + " | ");
+                System.out.print("Vel. da onda: " + result.getDouble(5) + " | ");
+                System.out.print("Distância inicial: " + result.getDouble(6) + " | ");
+                System.out.print("Tempo: " + result.getDouble(7) + " | ");
+                System.out.print("Intensidade: " + result.getDouble(8) + " | ");
+                System.out.print("Freq. aproximação: " + result.getDouble(9) + " | ");
+                System.out.print("Freq. afastamento: " + result.getDouble(10) + " | ");
+                System.out.print("Nome do Audio: " + result.getString(11) + "\n");
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
+    static void SalvarAudio(){
+        Scanner leitor = new Scanner(System.in);
+        SimulacaoDAO dao = new SimulacaoDAO(Conexao.getConnection());
+        System.out.print("Digite o id da simulação: ");
+        try{
+            dao.execSelectAudio(leitor.nextInt());
+            System.out.println("Arquivo salvo com sucesso");
+        } catch (SQLException e){
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    
+    static void DeletarSimulacao(){
+        Scanner leitor = new Scanner(System.in);
+        SimulacaoDAO dao = new SimulacaoDAO(Conexao.getConnection());
+        System.out.print("Digite o id da simulação: ");
+        try{
+            dao.execDelete(leitor.nextInt());
+            System.out.println("Simulação deletada");
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     static void SenoeCosseno(){
@@ -101,103 +173,5 @@ public class main {
         
         grafico.plot();
     }
-
-    static void criaBanco(Connection conexao){
-        String createDB = "CREATE DATABASE Banco "; // comando da criação do banco
-        
-        // try() inicia o objeto PreparedStatement como os respectivos comandos e fecha-o após a execução do bloco 
-        try(PreparedStatement stm = conexao.prepareStatement(createDB)){ 
-            stm.executeUpdate(); // executa o statement
-            System.out.println("Banco criado"); // mensagem de sucesso
-        } catch(SQLException e){} // caso de o banco já existir
-    }
-    
-    // Criação da tabela
-    static void criaTabela(Connection conexao){
-        String createTabela = "USE Banco " // comando da criação da tabela
-                            + "CREATE TABLE Pessoa("
-                            + "id int not null primary key,"
-                            + "nome varchar(40),"
-                            + "idade int) ";
-        
-        try(PreparedStatement stm = conexao.prepareStatement(createTabela)){
-            stm.executeUpdate();
-            System.out.println("Tabela criada");
-        } catch (SQLException e){} // caso de a tabela já existir
-    }
-    
-    // insere registros na tabela Pessoa
-    static void inserirDados(Connection conexao, int id, String nome, int idade) throws SQLException{
-        String insertDados = "INSERT INTO Pessoa VALUES (?,?,?)"; // comando insert
-        try (PreparedStatement stm = conexao.prepareStatement(insertDados)){
-            // Inclusão dos dados nos campos
-            stm.setInt(1, id); 
-            stm.setString(2,nome);
-            stm.setInt(3, idade); 
-            stm.executeUpdate(); // Execução
-        }
-    }
-    
-    // Seleciona os dados da tabela Pessoa em um resultset
-    static void selectDados(Connection conexao) throws SQLException{
-        ResultSet rst;
-        String selectTabela = "SELECT id,nome,idade FROM Pessoa"; // comando select
-        
-        try(PreparedStatement stm = conexao.prepareStatement(selectTabela)){
-            rst = stm.executeQuery(); // execução e armazenamento dos resultados
-            while (rst.next()){       // o ResultSet só pode ser usado enquanto seu statement não for fechado 
-                System.out.print("ID: " + rst.getInt("id"));
-                System.out.print("| Nome: " + rst.getString("nome"));
-                System.out.print("| Idade: " + rst.getInt("idade") + "\n");
-            }
-        }
-    }
-
-    static void BD(){
-        Scanner leitor = new Scanner(System.in);
-
-        Conexao conectar = new Conexao(); // instancia o objeto de conexão
-        Connection conexao = conectar.getConnection(); // estabelece uma conexão com o servidor
-        
-        criaBanco(conexao); // cria o banco e a tabela caso não existam
-        criaTabela(conexao);
-        
-        while(true){
-            System.out.println("Escolha uma opção: \n[1] Cadastrar pessoa; \n[2] Exibir cadastros; \n[0] Sair");
-            String opcao = leitor.next();
-            if (opcao.equals("1")){
-                System.out.print("ID: ");
-                int id = leitor.nextInt();
-                leitor.nextLine();
-                System.out.print("Nome: ");
-                String nome = leitor.nextLine();
-                System.out.print("Idade: ");
-                int idade = leitor.nextInt();
-
-                try{
-                    inserirDados(conexao, id, nome, idade);
-                } catch (SQLException e){
-                    System.out.println("ERRO: " + e.getMessage());
-                }
-            } else if(opcao.equals("2")){
-                try{
-                    selectDados(conexao);
-                } catch (SQLException e) {
-                    System.out.println("ERRO: " + e.getMessage());
-                }
-            } else if(opcao.equals("0")){
-                try{
-                    conexao.close();
-                    System.out.println("Conexão encerrada");
-                } catch (SQLException e){
-                    System.out.println("ERRO: " + e.getMessage());
-                }
-                break;
-            } else System.out.println("Digite uma opcao válida.");
-        }
-                
-        
-    }
-
   
 }

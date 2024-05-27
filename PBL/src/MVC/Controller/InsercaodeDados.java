@@ -23,9 +23,9 @@ public class InsercaodeDados {
             dao.execProcedureInsertEmissor(dados.getFrequenciaInicial(), dados.getVelocidadeRelativa(), dados.getPotencia(), 340);
             dao.execProcedureInsertSimulacoes(dados.getDistanciaInicial(), dados.getTempo(), dados.getIntensidade(), dados.getFreqPercebidaAfast(), dados.getFreqPercebidaAprox(), dados.getNome_do_audio()+".wav"); 
         } catch (SQLException e){
-            System.out.println("ERRO: " + e.getMessage());
+            e.printStackTrace();
         } catch (IOException e){
-            System.out.println("ERRO: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
