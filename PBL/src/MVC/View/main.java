@@ -3,8 +3,6 @@ package src.MVC.View;
 
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -13,7 +11,6 @@ import src.MVC.DAO.Conexao;
 import src.MVC.DAO.SimulacaoDAO;
 import src.MVC.Model.DadosFisica;
 import src.MVC.Model.GeraSom;
-import src.MVC.Model.Grafico;
 import src.MVC.Model.SenoECosseno;
 
 public class main {
@@ -27,7 +24,7 @@ public class main {
                 SenoeCosseno();;
                 break;
             case 2:
-                Grafico();
+                System.out.println("A opção não funciona mais");
                 break;
             case 3:
                 System.out.println("A opção não funciona mais");
@@ -94,6 +91,19 @@ public class main {
 
         System.out.println("Audio gerado!");
         
+        //parte do grafico
+        System.out.println("Grafico:");
+        dados.Calculafuncao(dados.getTempo());
+        double [] yt = new double[dados.getFuncaodografico().length];
+        yt = dados.getFuncaodografico();
+
+        for(int i = 0; i<= dados.getFuncaodografico().length; i++){
+            System.out.println("y(t) = " + Double.toString(yt[i]) + "x = " + Integer.toString(i));
+        }
+
+
+
+
         try{
             SimulacaoDAO dao = new SimulacaoDAO(Conexao.getConnection());
             dao.execProcedureInsertEmissor(dados.getFrequenciaInicial(), dados.getVelocidadeRelativa(), dados.getPotencia(), 340);
@@ -104,6 +114,7 @@ public class main {
         } catch (IOException e){
             e.printStackTrace();
         }
+
         
     }
     
@@ -168,10 +179,4 @@ public class main {
         System.out.println("Seno: " + Double.toString(calc.CalculaSeno(x)));
     }
 
-    static void Grafico(){
-        Grafico grafico = new Grafico();
-        
-        grafico.plot();
-    }
-  
 }

@@ -11,6 +11,7 @@ public class DadosFisica {
     private double frequenciaPercebidaAprox;
     private double frequenciaPercebidaAfast;
     private String nome_do_audio;
+    private double [] funcaodografico;
 
     //Método construtor
     public DadosFisica(double frequenciaInicial, double distanciaInicial, double velocidadeRelativa, double potencia, String nome_do_audio){
@@ -57,6 +58,9 @@ public class DadosFisica {
         return nome_do_audio;
     }
 
+    public double[] getFuncaodografico(){
+        return funcaodografico;
+    }
     //métodos set
     public void setFrequenciaInicial(double frequenciaInicial){
         this.frequenciaInicial = frequenciaInicial;
@@ -110,6 +114,24 @@ public class DadosFisica {
         
         return amplitude;
 
+    }
+
+    public void CriaArrayFuncao(double tempo){
+        int j = 0;
+        while(j<tempo){
+            j++;
+        }
+        
+        this.funcaodografico = new double[j];
+    }
+
+    public void Calculafuncao(double tempo){
+    
+        CriaArrayFuncao(tempo);
+        SenoECosseno sen = new SenoECosseno();
+        for(int j = 0; j < this.funcaodografico.length; j++){
+            this.funcaodografico[j] = CalculaAmplitude(potencia, (velocidadeRelativa * j)) * sen.CalculaSeno((2* (Math.PI) * frequenciaInicial * j));
+        }
     }
 
     public void CalculaTempoSimulacao(){
