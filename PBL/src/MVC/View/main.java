@@ -93,16 +93,9 @@ public class main {
         
         //parte do grafico
         System.out.println("Grafico:");
-        dados.Calculafuncao(dados.getTempo());
-        double [] yt = new double[dados.getFuncaodografico().length];
-        yt = dados.getFuncaodografico();
 
-        for(int i = 0; i<= dados.getFuncaodografico().length; i++){
-            System.out.println("y(t) = " + Double.toString(yt[i]) + "x = " + Integer.toString(i));
-        }
-
-
-
+        System.out.println("1ª Função: y(t) = " + Double.toString(dados.CalculaAmplitude(potencia, distancia_inicial)) + " * sin(2pi * " + Double.toString(dados.getFreqPercebidaAprox()) + "t)" );
+        System.out.println("2ª Função: y(t) = " + Double.toString(dados.CalculaAmplitude(potencia, distancia_inicial)) + " * sin(2pi * " + Double.toString(dados.getFreqPercebidaAfast()) + "t)" );
 
         try{
             SimulacaoDAO dao = new SimulacaoDAO(Conexao.getConnection());

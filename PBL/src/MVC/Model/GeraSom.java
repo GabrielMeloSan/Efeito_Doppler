@@ -48,7 +48,7 @@ public class GeraSom {
                     // Se estamos na segunda metade do áudio
                     volume = volumeFinal - ((volumeFinal - volumeInicial) * ((i / 2) - (momentoMudancaVolume * 44100)) / (momentoMudancaVolume * 44100));
                 }
-                double angle1 = 2.0 * Math.PI * i / (44100 / frequencia1);
+                double angle1 = 1.0 * Math.PI * i / (44100 / frequencia1);
                 short sample1 = (short) (calc.CalculaSeno(angle1) * volume * Short.MAX_VALUE);
                 samples[i] = (byte) (sample1 & 0xFF);
                 samples[i + 1] = (byte) ((sample1 >> 8) & 0xFF);

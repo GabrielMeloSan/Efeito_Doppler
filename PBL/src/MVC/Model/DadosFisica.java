@@ -92,14 +92,14 @@ public class DadosFisica {
     //Calculos de Física
     public double CalculaFrequenciaAprox(double velocidadeRelativa,double frequenciaInicial) {
 
-        frequenciaPercebidaAprox = frequenciaInicial * 340 / (340 - velocidadeRelativa);
-
+    frequenciaPercebidaAprox = (frequenciaInicial * ((340) / (340 - velocidadeRelativa)));
+      
         return frequenciaPercebidaAprox;
     }
 
     public double CalculaFrequenciaAfast(double velocidadeRelativa,double frequenciaInicial) {
 
-        frequenciaPercebidaAfast = frequenciaInicial * 340 / (340 + velocidadeRelativa);
+        frequenciaPercebidaAfast = (frequenciaInicial * ((340) / (340 + velocidadeRelativa)));
 
         return frequenciaPercebidaAfast;
     }

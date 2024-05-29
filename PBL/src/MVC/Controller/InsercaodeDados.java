@@ -17,12 +17,11 @@ public class InsercaodeDados {
         //Gera o áudio
         GeraSom.CriaAudio(dados.CalculaFrequenciaAprox(velocidade_relativa, frequencia_inicial), dados.CalculaFrequenciaAfast(velocidade_relativa, frequencia_inicial), dados.getTempo(), dados.getNome_do_audio());
 
-        //Joga os valores de y(t) para um array de 1 em 1:
-        dados.Calculafuncao(dados.getTempo());
-        double [] yt = new double[dados.getFuncaodografico().length];
-        yt = dados.getFuncaodografico();
-
+        // y(t) = A sin (2pift)
+        System.out.println("1ª Função: y(t) = " + Double.toString(dados.CalculaAmplitude(potencia, distancia_inicial)) + " sin(2π" + Double.toString(dados.getFreqPercebidaAprox()) + "t)" );
+        System.out.println("2ª Função: y(t) = " + Double.toString(dados.CalculaAmplitude(potencia, distancia_inicial)) + " sin(2π" + Double.toString(dados.getFreqPercebidaAfast()) + "t)" );
         //ATENÇÃO MATEUS:
+
         //a partir da função acima deve-se printar os valores com um for no javaFX, por exemplo
         // y(t) = 0; x = 0
         // y(t) = 1.7654; x = 1
