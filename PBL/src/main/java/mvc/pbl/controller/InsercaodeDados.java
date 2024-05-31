@@ -13,7 +13,8 @@ public class InsercaodeDados {
         
         //Insere os dados de física
         DadosFisica dados = new DadosFisica(frequencia_inicial, distancia_inicial, velocidade_relativa, potencia, nome_audio);
-        
+        dados.CalculaTempoSimulacao();
+
         //Gera o áudio
         GeraSom.CriaAudio(dados.CalculaFrequenciaAprox(velocidade_relativa, frequencia_inicial), dados.CalculaFrequenciaAfast(velocidade_relativa, frequencia_inicial), dados.getTempo(), dados.getNome_do_audio());
 
