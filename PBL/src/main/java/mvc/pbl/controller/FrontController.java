@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import mvc.pbl.FrontApp;
 import mvc.pbl.model.DadosFisica;
+import mvc.pbl.controller.*;
 
 import java.io.IOException;
 
@@ -66,7 +67,7 @@ public class FrontController {
 
     @FXML
     public void mudaValor() {
-        double tempo = DadosFisica.getTempo();
+        double tempo = InsercaodeDados.time;
         String temp = "";
         sliderTempo.setMax(tempo);
         Bindings.bindBidirectional(tfTempo.textProperty(), sliderTempo.valueProperty(), new javafx.util.StringConverter<Number>() {

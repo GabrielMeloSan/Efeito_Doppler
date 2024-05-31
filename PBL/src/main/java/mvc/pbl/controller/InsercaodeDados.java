@@ -9,6 +9,8 @@ import mvc.pbl.model.DadosFisica;
 import mvc.pbl.model.GeraSom;
 
 public class InsercaodeDados {
+    public static double time;
+
     public static void CalcularFisica(double frequencia_inicial, double distancia_inicial, double velocidade_relativa, double potencia, String nome_audio){
         
         //Insere os dados de física
@@ -30,7 +32,7 @@ public class InsercaodeDados {
         // y(t) = 1.7867; x = 3
         // y(t) = 0; x = 4
 
-        
+        time = dados.getTempo();
 
         //Parte de BD vai aqui abaixo:
         try{
@@ -42,5 +44,7 @@ public class InsercaodeDados {
         } catch (IOException e){
             e.printStackTrace();
         }
+
+
     }
 }
