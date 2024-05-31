@@ -140,6 +140,13 @@ public class DadosFisica {
         this.tempo = temposimulacao;
     }
 
+    public String CalculaFuncao(double potencia, double distancia_inicial){
+        String func1 = ("1ª Função: y(t) = " + Double.toString(CalculaAmplitude(potencia, distancia_inicial)) + " sin(2π" + Double.toString(getFreqPercebidaAprox()) + "t)" );
+        String func2 = ("2ª Função: y(t) = " + Double.toString(CalculaAmplitude(potencia, distancia_inicial)) + " sin(2π" + Double.toString(getFreqPercebidaAfast()) + "t)" );
+
+        return func1 + "\n" + func2;
+    }
+
     public void CalculaIntensidade(){
         double intensidadecalculada = potencia/(4 * (Math.PI) * Math.pow(distanciaInicial,2));
         this.intensidade = intensidadecalculada;
