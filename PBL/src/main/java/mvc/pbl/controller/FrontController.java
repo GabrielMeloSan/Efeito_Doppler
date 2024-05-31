@@ -1,18 +1,22 @@
 package mvc.pbl.controller;
 
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 
 import javafx.application.Platform;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import mvc.pbl.FrontApp;
+import mvc.pbl.model.DadosFisica;
 
 import java.io.IOException;
 
 public class FrontController {
     public ImageView buttonCriar, buttonOuvir, buttonVoltar, buttonEnviarDados, buttonExit;
-    public TextField tfFreq, tfVel, tfDist, tfPot, tfNom;
+    public TextField tfFreq, tfVel, tfDist, tfPot, tfNom, tfTempo, valorY;
+    public Slider sliderTempo;
 
     @FXML
     public void appCriar() throws IOException {
@@ -39,6 +43,8 @@ public class FrontController {
             }
         } while (exceptionCaught);
         InsercaodeDados.CalcularFisica(temp[0],temp[1],temp[2],temp[3],tNome);
+        Stage stage = (Stage) buttonEnviarDados.getScene().getWindow();
+        FrontApp.dadosAudio(stage);
     }
 
     @FXML
@@ -56,5 +62,28 @@ public class FrontController {
     @FXML
     public void appExit() {
         Platform.exit();
+    }
+
+    @FXML
+    public void mudaValor() {
+        double tempo = DadosFisica.getTempo();
+        String temp = "";
+        sliderTempo.setMax(tempo);
+        Bindings.bindBidirectional(tfTempo.textProperty(), sliderTempo.valueProperty(), new javafx.util.StringConverter<Number>() {
+            @Override
+            public String toString(Number number) {
+                return number.toString();
+            }
+
+            @Override
+            public Number fromString(String string) {
+                try {
+                    return Double.valueOf(string);
+                } catch (NumberFormatException e) {
+                    return 0;
+                }
+            }
+        });
+        valorY.setText(temp);
     }
 }
