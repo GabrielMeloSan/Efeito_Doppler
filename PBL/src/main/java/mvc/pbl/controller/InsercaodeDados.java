@@ -7,9 +7,13 @@ import mvc.pbl.dao.Conexao;
 import mvc.pbl.dao.SimulacaoDAO;
 import mvc.pbl.model.DadosFisica;
 import mvc.pbl.model.GeraSom;
+import mvc.pbl.model.SenoECosseno;
 
 public class InsercaodeDados {
     public static double time;
+    public static double amplitude;
+    public static double freqaprox;
+    public static double freqafast;
 
     public static void CalcularFisica(double frequencia_inicial, double distancia_inicial, double velocidade_relativa, double potencia, String nome_audio){
         
@@ -33,7 +37,9 @@ public class InsercaodeDados {
         // y(t) = 0; x = 4
 
         time = dados.getTempo();
-
+        amplitude = dados.CalculaAmplitude(potencia, distancia_inicial);
+        freqaprox = dados.getFreqPercebidaAprox();
+        freqafast = dados.getFreqPercebidaAfast();
         //Parte de BD vai aqui abaixo:
         try{
             SimulacaoDAO dao = new SimulacaoDAO(Conexao.getConnection());
@@ -44,7 +50,17 @@ public class InsercaodeDados {
         } catch (IOException e){
             e.printStackTrace();
         }
+    }
 
+    public double CalcFuncYt (double t){
+        double y;
+        SenoECosseno sen = new SenoECosseno();
 
+        if(t>(time/2)){
+            y = (amplitude  * (sen.CalculaSeno((2*Math.PI) * freqafast * t)));
+        }else{
+            y = (amplitude  * (sen.CalculaSeno((2*Math.PI) * freqaprox * t)));
+        }
+        return y;
     }
 }
