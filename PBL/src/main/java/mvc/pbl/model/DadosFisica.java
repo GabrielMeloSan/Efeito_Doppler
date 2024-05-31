@@ -116,24 +116,6 @@ public class DadosFisica {
 
     }
 
-    public void CriaArrayFuncao(double tempo){
-        int j = 0;
-        while(j<tempo){
-            j++;
-        }
-        
-        this.funcaodografico = new double[j];
-    }
-
-    public void Calculafuncao(double tempo){
-    
-        CriaArrayFuncao(tempo);
-        SenoECosseno sen = new SenoECosseno();
-        for(int j = 0; j < this.funcaodografico.length; j++){
-            this.funcaodografico[j] = CalculaAmplitude(potencia, (velocidadeRelativa * j)) * sen.CalculaSeno((2* (Math.PI) * frequenciaInicial * j));
-        }
-    }
-
     public void CalculaTempoSimulacao(){
         double temposimulacao = 2*distanciaInicial/velocidadeRelativa;
         
@@ -147,6 +129,20 @@ public class DadosFisica {
         return func1 + "\n" + func2;
     }
 
+    public double CalculaYt(double t){
+        
+        SenoECosseno sen = new SenoECosseno();
+        double y;
+        double time = getTempo();
+
+        if(t>(time/2)){
+            y = (CalculaAmplitude(getPotencia(), getDistanciaInicial()) * (sen.CalculaSeno((2*Math.PI) * getFreqPercebidaAfast() * t)));
+        }else{
+            y = (CalculaAmplitude(getPotencia(), getDistanciaInicial()) * (sen.CalculaSeno((2*Math.PI) * getFreqPercebidaAprox() * t)));
+        }
+        
+        return y;
+    }
     public void CalculaIntensidade(){
         double intensidadecalculada = potencia/(4 * (Math.PI) * Math.pow(distanciaInicial,2));
         this.intensidade = intensidadecalculada;
