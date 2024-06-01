@@ -3,30 +3,38 @@ package mvc.pbl.controller;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 
 import javafx.application.Platform;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javax.sound.sampled.*;
 import mvc.pbl.FrontApp;
+import mvc.pbl.dao.Conexao;
+import mvc.pbl.dao.SimulacaoDAO;
 import mvc.pbl.model.DadosFisica;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class FrontController {
     public ImageView buttonCriar, buttonOuvir, buttonVoltar, buttonEnviarDados, buttonExit,
-                     buttonPlay;
-    public TextField tfFreq, tfVel, tfDist, tfPot, tfNom, tfTempo, valorY;
+                     buttonPlay, buttonBaixar, buttonApagar;
+    public TextField tfFreq, tfVel, tfDist, tfPot, tfNom, tfTempo, valorY, func1, func2, ID;
     public Slider sliderTempo, sliderVolume;
     public ProgressBar tempoAudio;
+    public ListView<String> listaAudio;
     private Clip clip;
     private boolean playing;
     private ScheduledExecutorService scheduler;
@@ -174,11 +182,17 @@ public class FrontController {
     }
 
     @FXML
-    public void mudaValor() {
+    public void setText() {
+        func1.setText("1: y(t) = " + String.format("%.3f", InsercaodeDados.amplitude) + " sin(2π" + String.format("%.3f", InsercaodeDados.freqaprox) + "t)");
+        func2.setText("2: y(t) = " + String.format("%.3f", InsercaodeDados.amplitude) + " sin(2π" + String.format("%.3f", InsercaodeDados.freqafast) + "t)");
         double tempo = InsercaodeDados.time;
         sliderTempo.setMax(tempo);
         sliderTempo.setValue(tempo/2);
-        tfTempo.setText(String.valueOf(tempo/2));
+        tfTempo.setText(String.format("%.2f", tempo/2));
+    }
+
+    @FXML
+    public void mudaValor() {
         sliderTempo.valueProperty().bindBidirectional(valorTempo);
         tfTempo.textProperty().bindBidirectional(valorTempo, new javafx.util.converter.NumberStringConverter());
         sliderTempo.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -190,5 +204,68 @@ public class FrontController {
     private void atualizaY() {
         double resultado = InsercaodeDados.CalcFuncYt(sliderTempo.getValue());
         valorY.setText(String.valueOf(resultado));
+    }
+
+    @FXML
+    public void populaLista() {
+        List<String> data = getColunasBD();
+
+        //converte lista em lista observavel
+        ObservableList<String> observableList = FXCollections.observableArrayList(data);
+        listaAudio.setItems(observableList);
+    }
+
+    private static List<String> getColunasBD() {
+        List<String> data = new ArrayList<>();
+        SimulacaoDAO dao = new SimulacaoDAO(Conexao.getConnection());
+        try{
+            ResultSet result = dao.execSelectAll();
+            ResultSetMetaData resultmd = result.getMetaData();
+            int colunas = resultmd.getColumnCount();
+
+            while (result.next()) {
+                StringBuilder linha = new StringBuilder();
+                for (int i = 1; i <= colunas; i++) {
+                    linha.append(resultmd.getColumnName(i)).append(": ").append(result.getString(i)).append("  ");
+                }
+                data.add(linha.toString());
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return data;
+    }
+
+    @FXML
+    public void apagaArquivo() {
+        SimulacaoDAO dao = new SimulacaoDAO(Conexao.getConnection());
+        try{
+            dao.execDelete(Integer.parseInt(ID.getText()));
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void baixaArquivo() throws IOException {
+        double[] temp = new double[4];
+        String tNome = "";
+        SimulacaoDAO dao = new SimulacaoDAO(Conexao.getConnection());
+        try {
+            ResultSet result = dao.execSelectAll();
+            dao.execSelectAudio(Integer.parseInt(ID.getText()));
+            temp[0] = result.getDouble(2);
+            temp[1] = result.getDouble(6);
+            temp[2] = result.getDouble(3);
+            temp[3] = result.getDouble(4);
+            tNome = result.getString(11);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        InsercaodeDados.CalcularFisica(temp[0],temp[1],temp[2],temp[3],tNome);
+        Stage stage = (Stage) buttonBaixar.getScene().getWindow();
+        FrontApp.dadosAudio(stage, tNome);
     }
 }
