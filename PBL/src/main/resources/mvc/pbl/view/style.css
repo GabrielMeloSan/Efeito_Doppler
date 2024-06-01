@@ -50,3 +50,23 @@
     -fx-image: url("button3_hover.png");
     -fx-position: center;
 }
+
+.button4{
+    -fx-image: url("button4.png");
+    -fx-position: center;
+}
+
+.button4:hover{
+    -fx-image: url("button4_hover.png");
+    -fx-position: center;
+}
+
+.button5{
+    -fx-image: url("button5.png");
+    -fx-position: center;
+}
+
+.button5:hover{
+    -fx-image: url("button5_hover.png");
+    -fx-position: center;
+}
