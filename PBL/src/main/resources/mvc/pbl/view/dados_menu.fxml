@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" styleClass="body" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mvc.pbl.controller.FrontController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#setText" prefHeight="480.0" prefWidth="800.0" styleClass="body" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mvc.pbl.controller.FrontController">
    <children>
       <ImageView fitHeight="65.0" fitWidth="240.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" styleClass="title" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
       <GridPane layoutX="276.0" layoutY="259.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
@@ -39,7 +39,7 @@
                   <Insets left="20.0" top="20.0" />
                </GridPane.margin>
             </ImageView>
-            <Slider fx:id="sliderTempo" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="160.0" value="50.0" GridPane.valignment="CENTER">
+            <Slider fx:id="sliderTempo" maxWidth="-Infinity" minWidth="-Infinity" onMousePressed="#mudaValor" prefWidth="160.0" value="50.0" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets left="20.0" top="40.0" />
                </GridPane.margin>
@@ -68,11 +68,25 @@
                   <Insets top="20.0" />
                </GridPane.margin>
             </ImageView>
-            <Slider fx:id="sliderVolume" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" value="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+            <Slider fx:id="sliderVolume" max="1.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" value="0.5" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets bottom="20.0" />
                </GridPane.margin>
             </Slider>
+            <ImageView fitHeight="47.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <image>
+                  <Image url="@text7.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets left="20.0" />
+               </GridPane.margin>
+            </ImageView>
+            <TextField fx:id="func1" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <TextField fx:id="func2" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+               <GridPane.margin>
+                  <Insets bottom="20.0" />
+               </GridPane.margin>
+            </TextField>
          </children>
       </GridPane>
    </children>

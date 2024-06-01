@@ -70,3 +70,13 @@
     -fx-image: url("button5_hover.png");
     -fx-position: center;
 }
+
+.button6{
+    -fx-image: url("button6.png");
+    -fx-position: center;
+}
+
+.button6:hover{
+    -fx-image: url("button6_hover.png");
+    -fx-position: center;
+}
