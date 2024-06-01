@@ -49,7 +49,7 @@ public class DadosFisica {
     public double getFreqPercebidaAprox(){
         return frequenciaPercebidaAprox;
     }
-    
+
     public double getFreqPercebidaAfast(){
         return frequenciaPercebidaAfast;
     }
@@ -61,6 +61,7 @@ public class DadosFisica {
     public double[] getFuncaodografico(){
         return funcaodografico;
     }
+
     //métodos set
     public void setFrequenciaInicial(double frequenciaInicial){
         this.frequenciaInicial = frequenciaInicial;
@@ -93,7 +94,7 @@ public class DadosFisica {
     public double CalculaFrequenciaAprox(double velocidadeRelativa,double frequenciaInicial) {
 
     frequenciaPercebidaAprox = (frequenciaInicial * ((340) / (340 - velocidadeRelativa)));
-      
+
         return frequenciaPercebidaAprox;
     }
 
@@ -111,42 +112,51 @@ public class DadosFisica {
         intensidadeFisica = potencia / 4 * Math.PI * Math.pow(distancia, 2);
 
         amplitude = 10 * Math.log10(intensidadeFisica / Math.pow(10, -12));
-        
+
         return amplitude;
 
     }
 
+    public void CriaArrayFuncao(double tempo){
+        int j = 0;
+        while(j<tempo){
+            j++;
+        }
+
+        this.funcaodografico = new double[j];
+    }
+
+    public void Calculafuncao(double tempo){
+
+        CriaArrayFuncao(tempo);
+        SenoECosseno sen = new SenoECosseno();
+        for(int j = 0; j < this.funcaodografico.length; j++){
+            this.funcaodografico[j] = CalculaAmplitude(potencia, (velocidadeRelativa * j)) * sen.CalculaSeno((2* (Math.PI) * frequenciaInicial * j));
+        }
+    }
+
     public void CalculaTempoSimulacao(){
         double temposimulacao = 2*distanciaInicial/velocidadeRelativa;
-        
+
         this.tempo = temposimulacao;
     }
 
-    public String CalculaFuncao(double potencia, double distancia_inicial){
-        String func1 = ("1ª Função: y(t) = " + Double.toString(CalculaAmplitude(potencia, distancia_inicial)) + " sin(2π" + Double.toString(getFreqPercebidaAprox()) + "t)" );
-        String func2 = ("2ª Função: y(t) = " + Double.toString(CalculaAmplitude(potencia, distancia_inicial)) + " sin(2π" + Double.toString(getFreqPercebidaAfast()) + "t)" );
-
-        return func1 + "\n" + func2;
-    }
-
-    public double CalculaYt(double t){
-        
-        SenoECosseno sen = new SenoECosseno();
-        double y;
-        double time = getTempo();
-
-        if(t>(time/2)){
-            y = (CalculaAmplitude(getPotencia(), getDistanciaInicial()) * (sen.CalculaSeno((2*Math.PI) * getFreqPercebidaAfast() * t)));
-        }else{
-            y = (CalculaAmplitude(getPotencia(), getDistanciaInicial()) * (sen.CalculaSeno((2*Math.PI) * getFreqPercebidaAprox() * t)));
-        }
-        
-        return y;
-    }
-    public void CalculaIntensidade(){
-        double intensidadecalculada = potencia/(4 * (Math.PI) * Math.pow(distanciaInicial,2));
+    public void CalculaIntensidade() {
+        double intensidadecalculada = potencia / (4 * (Math.PI) * Math.pow(distanciaInicial, 2));
         this.intensidade = intensidadecalculada;
     }
 
-    
+    public double CalculaYt(double t) {
+        SenoECosseno sen = new SenoECosseno();
+        double time = this.getTempo();
+        double y;
+        if (t > time / 2.0) {
+            y = this.CalculaAmplitude(this.getPotencia(), this.getDistanciaInicial()) * sen.CalculaSeno(6.283185307179586 * this.getFreqPercebidaAfast() * t);
+        } else {
+            y = this.CalculaAmplitude(this.getPotencia(), this.getDistanciaInicial()) * sen.CalculaSeno(6.283185307179586 * this.getFreqPercebidaAprox() * t);
+        }
+
+        return y;
+    }
+
 }

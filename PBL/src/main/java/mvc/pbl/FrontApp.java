@@ -38,11 +38,11 @@ public class FrontApp extends Application {
         stage = stage;
         Scene scene = new Scene(fxmlLoader.load(), 800, 480);
         stage.setScene(scene);
-        stage.setTitle("Ouvindo waves");
+        stage.setTitle("Ouvindo wave");
     }
 
-    public static void dadosAudio(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(FrontApp.class.getResource("view/ouvir_menu.fxml"));
+    public static void dadosAudio(Stage stage, String nome) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(FrontApp.class.getResource("view/dados_menu.fxml"));
         stage = stage;
         Scene scene = new Scene(fxmlLoader.load(), 800, 480);
         stage.setScene(scene);
