@@ -256,6 +256,17 @@ public class SimulacaoDAO {
         }
     }
 
+    public void criaSelectIDSp() throws SQLException{
+        String createSP = "create or alter procedure sp_Select_ID (@id int) as begin " +
+                "select e.*, s.Distancia, s.Tempo, s.Intensidade, s.Frequencia_inicial, s.Frequencia_final, s.NomeAudio from Emissor e " +
+                "left join Simulacao s on s.Fk_Emissor_nm_emissor = e.nm_emissor " +
+                "where e.nm_emissor = @id " +
+                "end ";
+        try(PreparedStatement stm = conexao.prepareStatement(createSP)){
+            stm.executeUpdate();
+        }
+    }
+
     // SP para selecionar um áudio e seu nome
     public void criaSelectAudio() throws SQLException{
         String createSP = "create or alter procedure sp_Select_Audio (@id int) as begin " +
@@ -281,6 +292,7 @@ public class SimulacaoDAO {
             criaInsertSpSimulacao();
             criaDeleteAllSp();
             criaSelectAllSp();
+            criaSelectIDSp();
             criaSelectAudio();
         } catch (SQLException e){System.out.print("ERRO: " + e.getMessage());}
     }
@@ -336,6 +348,14 @@ public class SimulacaoDAO {
         ResultSet result = stm.executeQuery();        
         return result;
     }
+
+    public ResultSet execSelectID(int id) throws SQLException{
+        String execSP = "exec sp_Select_ID ?";
+        PreparedStatement stm = conexao.prepareStatement(execSP);
+        stm.setInt(1,id);
+        ResultSet result = stm.executeQuery();
+        return result;
+    }
             
     // Busca e salva o áudio de uma simulaçao no PC
     public void execSelectAudio(int id) throws SQLException, IOException{
@@ -351,5 +371,7 @@ public class SimulacaoDAO {
             arquivo.write(audio);
         }
     }
+
+
  
 }
