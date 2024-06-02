@@ -252,8 +252,9 @@ public class FrontController {
         String tNome = "";
         SimulacaoDAO dao = new SimulacaoDAO(Conexao.getConnection());
         try {
-            ResultSet result = dao.execSelectAll();
+            ResultSet result = dao.execSelectID(Integer.parseInt(ID.getText()));
             dao.execSelectAudio(Integer.parseInt(ID.getText()));
+            result.next();
             temp[0] = result.getDouble(2);
             temp[1] = result.getDouble(6);
             temp[2] = result.getDouble(3);
@@ -264,7 +265,7 @@ public class FrontController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        InsercaodeDados.CalcularFisica(temp[0],temp[1],temp[2],temp[3],tNome);
+        InsercaodeDados.CalcularFisicaDados(temp[0],temp[1],temp[2],temp[3],tNome);
         Stage stage = (Stage) buttonBaixar.getScene().getWindow();
         FrontApp.dadosAudio(stage, tNome);
     }

@@ -317,7 +317,7 @@ public class SimulacaoDAO {
     public void execProcedureInsertSimulacoes(double distancia, double tempo, double intensidade, double Frequenciafi, double Frequenciaini, String nomeA) throws SQLException, IOException{
         String execSP = "exec sp_insert_Simulacao  ?, ?, ?, ?, ?, ?, ? ";
 
-        FileInputStream arquivo = new FileInputStream(nomeA); // Cria um inputstream do arquivo de audio
+        FileInputStream arquivo = new FileInputStream(nomeA + ".wav"); // Cria um inputstream do arquivo de audio
         
         try (PreparedStatement stm = conexao.prepareStatement(execSP)){
             stm.setDouble(1, distancia);
@@ -367,7 +367,7 @@ public class SimulacaoDAO {
             resultado.next();
             String nomeArq = resultado.getString(1);
             byte[] audio = resultado.getBytes(2);
-            OutputStream arquivo = new FileOutputStream(nomeArq);
+            OutputStream arquivo = new FileOutputStream(nomeArq + ".wav");
             arquivo.write(audio);
         }
     }
