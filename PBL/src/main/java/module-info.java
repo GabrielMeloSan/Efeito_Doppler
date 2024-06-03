@@ -8,8 +8,8 @@ module mvc.pbl {
     requires java.sql;
     requires java.desktop;
 
-    opens mvc.pbl to javafx.fxml;
-    exports mvc.pbl;
-    exports mvc.pbl.controller;
-    opens mvc.pbl.controller to javafx.fxml;
+    opens mvc to javafx.fxml;
+    exports mvc;
+    exports mvc.controller;
+    opens mvc.controller to javafx.fxml;
 }
