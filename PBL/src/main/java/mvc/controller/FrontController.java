@@ -203,11 +203,11 @@ public class FrontController {
 
             while (result.next()) {
                 StringBuilder linha = new StringBuilder();
-                linha.append(resultmd.getColumnName(1)).append(": ").append(result.getString(1)).append("  ");
-                linha.append(resultmd.getColumnName(11)).append(": ").append(result.getString(11)).append("  ");
-                linha.append(resultmd.getColumnName(2)).append(": ").append(result.getString(2)).append("  ");
-                linha.append(resultmd.getColumnName(8)).append(": ").append(result.getString(9)).append("  ");
-                linha.append(resultmd.getColumnName(10)).append(": ").append(result.getString(10)).append("  ");
+                linha.append("ID").append(": ").append(result.getString(1)).append("  ");
+                linha.append("Nome").append(": ").append(result.getString(11)).append("  ");
+                linha.append("Frequência Base").append(": ").append(result.getString(2)).append("  ");
+                linha.append("Frequência Aproximação").append(": ").append(result.getString(9)).append("  ");
+                linha.append("Frequência Afastamento").append(": ").append(result.getString(10)).append("  ");
                 data.add(linha.toString());
             }
 
