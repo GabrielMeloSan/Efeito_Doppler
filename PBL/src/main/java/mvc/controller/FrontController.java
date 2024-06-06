@@ -37,6 +37,7 @@ public class FrontController {
     private boolean playing;
     private ScheduledExecutorService scheduler;
     private final DoubleProperty valorTempo = new SimpleDoubleProperty();
+    private boolean exceptionCaught;
 
     @FXML
     public void appCriar() throws IOException {
@@ -46,25 +47,24 @@ public class FrontController {
 
     @FXML
     public void appEnviarDados() throws IOException {
-        boolean exceptionCaught;
         double[] temp = new double[4];
         String tNome = "";
-        do {
-            exceptionCaught = false;
-            try {
-                temp[0] = Double.parseDouble(tfFreq.getText().replaceAll(",", "."));
-                temp[1] = Double.parseDouble(tfDist.getText().replaceAll(",", "."));
-                temp[2] = Double.parseDouble(tfVel.getText().replaceAll(",", "."));
-                temp[3] = Double.parseDouble(tfPot.getText().replaceAll(",", "."));
-                tNome = tfNom.getText();
-                System.out.println(temp[0] + " " + temp[1] + " " + temp[2] + " " + temp[3] + " " + tNome);
-            } catch (NumberFormatException nfe) {
-                exceptionCaught = true;
-            }
-        } while (exceptionCaught);
-        InsercaodeDados.CalcularFisica(temp[0],temp[1],temp[2],temp[3],tNome);
-        Stage stage = (Stage) buttonEnviarDados.getScene().getWindow();
-        FrontApp.dadosAudio(stage, tNome);
+        try {
+            temp[0] = Double.parseDouble(tfFreq.getText().replaceAll(",", "."));
+            temp[1] = Double.parseDouble(tfDist.getText().replaceAll(",", "."));
+            temp[2] = Double.parseDouble(tfVel.getText().replaceAll(",", "."));
+            temp[3] = Double.parseDouble(tfPot.getText().replaceAll(",", "."));
+            tNome = tfNom.getText();
+            System.out.println(temp[0] + " " + temp[1] + " " + temp[2] + " " + temp[3] + " " + tNome);
+        } catch (NumberFormatException nfe) {
+            nfe.printStackTrace();
+            exceptionCaught = true;
+        }
+        if (!exceptionCaught) {
+            InsercaodeDados.CalcularFisica(temp[0], temp[1], temp[2], temp[3], tNome);
+            Stage stage = (Stage) buttonEnviarDados.getScene().getWindow();
+            FrontApp.dadosAudio(stage, tNome);
+        }
     }
 
     @FXML
@@ -192,12 +192,14 @@ public class FrontController {
         //converte lista em lista observavel
         ObservableList<String> observableList = FXCollections.observableArrayList(data);
         listaAudio.setItems(observableList);
+
     }
 
     private static List<String> getColunasBD() {
         List<String> data = new ArrayList<>();
-        SimulacaoDAO dao = new SimulacaoDAO(Conexao.getConnection());
         try{
+            SimulacaoDAO dao = new SimulacaoDAO(Conexao.getConnection());
+
             ResultSet result = dao.execSelectAll();
             ResultSetMetaData resultmd = result.getMetaData();
 
@@ -211,8 +213,9 @@ public class FrontController {
                 data.add(linha.toString());
             }
 
-        } catch (SQLException e){
+        } catch (Exception e){
             e.printStackTrace();
+            data.add("Não foi possível conectar ao banco de dados");
         }
         return data;
     }
@@ -241,13 +244,14 @@ public class FrontController {
             temp[2] = result.getDouble(3);
             temp[3] = result.getDouble(4);
             tNome = result.getString(11);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            exceptionCaught = true;
         }
-        InsercaodeDados.CalcularFisicaDados(temp[0],temp[1],temp[2],temp[3],tNome);
-        Stage stage = (Stage) buttonBaixar.getScene().getWindow();
-        FrontApp.dadosAudio(stage, tNome);
+        if (!exceptionCaught) {
+            InsercaodeDados.CalcularFisicaDados(temp[0], temp[1], temp[2], temp[3], tNome);
+            Stage stage = (Stage) buttonBaixar.getScene().getWindow();
+            FrontApp.dadosAudio(stage, tNome);
+        }
     }
 }
